@@ -31,7 +31,7 @@ namespace Frogger.Models
             g.DrawImage(icon, X, Y, Width, Settings.BoxSize);
         }
 
-        public void Update()
+        public void Move()
         {
             if (Direction == Direction.Right)
             {

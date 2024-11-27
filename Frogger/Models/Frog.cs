@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Frogger.Models
 {
-    internal class Frog
+    public class Frog
     {
         public int X = Settings.FrogStartingX;
         public int Y = Settings.FrogStartingY;
-        public Image AliveIcon = Image.FromFile("..\\..\\..\\Icons\\frog.png");
-        public Image DeadIcon = Image.FromFile("..\\..\\..\\Icons\\frog-dead.png");
-        public Image Icon = null;
         public bool Dead = false;
+        Image AliveIcon = Image.FromFile("..\\..\\..\\Icons\\frog.png");
+        Image DeadIcon = Image.FromFile("..\\..\\..\\Icons\\frog-dead.png");
+        Image Icon = null;
 
         public Frog() 
         {

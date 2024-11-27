@@ -7,7 +7,7 @@ namespace Frogger
     {
         Frog Frog = new Frog();
         HashSet<Keys> PressedKeys = new HashSet<Keys>();
-        VehicleManager VehicleManager = new VehicleManager();
+        MovingObjectManager MovingObjectManager = new MovingObjectManager();
 
         public Form1()
         {
@@ -35,7 +35,7 @@ namespace Frogger
 
             DrawMap(g);
             Frog.Draw(g);
-            VehicleManager.DrawAndUpdateVehicles(g);
+            MovingObjectManager.DrawAndUpdateVehicles(g);
 
             FrogCollisionCheck();
         }
@@ -45,7 +45,7 @@ namespace Frogger
             var frogRect = new Rectangle(Frog.X, Frog.Y, Settings.BoxSize, Settings.BoxSize);
             var waterRect = new Rectangle(0, 150, Settings.WindowWidth, 150);
 
-            foreach (var vehicle in VehicleManager.Vehicles.Where(v => v.Y == Frog.Y))
+            foreach (var vehicle in MovingObjectManager.Vehicles.Where(v => v.Y == Frog.Y))
             {
                 var vehicleRect = new Rectangle(vehicle.X, vehicle.Y, vehicle.Width, Settings.BoxSize);
                 if (IsColliding(vehicleRect, frogRect))
