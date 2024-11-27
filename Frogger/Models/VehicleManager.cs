@@ -12,12 +12,18 @@ namespace Frogger.Models
 
         public VehicleManager()
         {
-            Vehicles.Add(new Vehicle(VehicleType.Car1, Direction.Left, Settings.WindowHeight - Settings.BoxSize * 2));
-            Vehicles.Add(new Vehicle(VehicleType.Car2, Direction.Right, Settings.WindowHeight - Settings.BoxSize * 3));
-            Vehicles.Add(new Vehicle(VehicleType.SportCar1, Direction.Left, Settings.WindowHeight - Settings.BoxSize * 4));
-            Vehicles.Add(new Vehicle(VehicleType.SportCar2, Direction.Right, Settings.WindowHeight - Settings.BoxSize * 5));
-            Vehicles.Add(new Vehicle(VehicleType.Truck, Direction.Left, Settings.WindowHeight - Settings.BoxSize * 6));
-            Vehicles.Add(new Vehicle(VehicleType.Bus, Direction.Right, Settings.WindowHeight - Settings.BoxSize * 7));
+            Vehicles.Add(new Car1(Direction.Right, 0, Settings.WindowHeight - Settings.BoxSize * 2));
+            Vehicles.Add(new Car1(Direction.Right, Settings.WindowWidth / 2, Settings.WindowHeight - Settings.BoxSize * 2));
+            Vehicles.Add(new Car2(Direction.Left, 0, Settings.WindowHeight - Settings.BoxSize * 3));
+            Vehicles.Add(new Car2(Direction.Left, Settings.WindowWidth / 2, Settings.WindowHeight - Settings.BoxSize * 3));
+            Vehicles.Add(new SportCar1(Direction.Right, 0, Settings.WindowHeight - Settings.BoxSize * 4));
+            Vehicles.Add(new SportCar1(Direction.Right, Settings.WindowWidth / 2, Settings.WindowHeight - Settings.BoxSize * 4));
+            Vehicles.Add(new SportCar2(Direction.Left, 0, Settings.WindowHeight - Settings.BoxSize * 5));
+            Vehicles.Add(new SportCar2(Direction.Left, Settings.WindowWidth / 2, Settings.WindowHeight - Settings.BoxSize * 5));
+            Vehicles.Add(new Truck(Direction.Right, 0, Settings.WindowHeight - Settings.BoxSize * 6));
+            Vehicles.Add(new Truck(Direction.Right, Settings.WindowWidth / 2, Settings.WindowHeight - Settings.BoxSize * 6));
+            Vehicles.Add(new Bus(Direction.Left, 0, Settings.WindowHeight - Settings.BoxSize * 7));
+            Vehicles.Add(new Bus(Direction.Left, Settings.WindowWidth / 2, Settings.WindowHeight - Settings.BoxSize * 7));
         }
 
         public void DrawAndUpdateVehicles(Graphics g)

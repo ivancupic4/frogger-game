@@ -1,39 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Frogger.Models
 {
-    internal class Vehicle
+    public abstract class Vehicle
     {
         public int X = 0;
         public int Y = 0;
-        public int Width = Settings.BoxSize;
         public int Speed = 5;
+        public int Width = Settings.BoxSize;
         Direction Direction;
-        Image Icon = Image.FromFile("..\\..\\..\\Icons\\car-1.png");
 
-        public Vehicle(VehicleType type, Direction direction, int startingY)
+        public Vehicle(Direction direction, int startingX, int startingY, int width, int speed)
         {
+            X = startingX;
             Y = startingY;
+            Speed = speed;
+            Width = width;
             Direction = direction;
-            LoadImageForType(type);
-            if (direction == Direction.Right)
-            {
-                X = -Settings.BoxSize;
-            }
-            else
-            {
-                X = Settings.WindowWidth;
-                Icon.RotateFlip(RotateFlipType.Rotate180FlipY);
-            }
         }
 
-        public void Draw(Graphics g)
+        public abstract void Draw(Graphics g);
+
+        public void DrawImage(Graphics g, Image icon)
         {
-            g.DrawImage(Icon, X, Y, Width, Settings.BoxSize);
+            g.DrawImage(icon, X, Y, Width, Settings.BoxSize);
         }
 
         public void Update()
@@ -52,31 +47,112 @@ namespace Frogger.Models
             }
         }
 
-        public void LoadImageForType(VehicleType type)
+        public void FlipIfDirectionLeft(Direction direction, Image icon)
         {
-            switch (type)
-            {
-                case VehicleType.Car1:
-                    Icon = Image.FromFile("..\\..\\..\\Icons\\car-1.png");
-                    break;
-                case VehicleType.Car2:
-                    Icon = Image.FromFile("..\\..\\..\\Icons\\car-2.png");
-                    break;
-                case VehicleType.SportCar1:
-                    Icon = Image.FromFile("..\\..\\..\\Icons\\sport-car-1.png");
-                    break;
-                case VehicleType.SportCar2:
-                    Icon = Image.FromFile("..\\..\\..\\Icons\\sport-car-2.png");
-                    break;
-                case VehicleType.Truck:
-                    Icon = Image.FromFile("..\\..\\..\\Icons\\truck.png");
-                    Width = Settings.BoxSize * 2;
-                    break;
-                case VehicleType.Bus:
-                    Icon = Image.FromFile("..\\..\\..\\Icons\\bus.png");
-                    Width = Settings.BoxSize * 2;
-                    break;
-            }
+            if (direction == Direction.Left)
+                icon.RotateFlip(RotateFlipType.Rotate180FlipY);
+        }
+    }
+
+    public class Car1 : Vehicle
+    {
+        static int Speed = 6;
+        static int Width = Settings.BoxSize;
+        Image Icon = Image.FromFile("..\\..\\..\\Icons\\car-1.png");
+
+        public Car1(Direction direction, int startingX, int startingY) : base(direction, startingX, startingY, Width, Speed)
+        {
+            FlipIfDirectionLeft(direction, Icon);
+        }
+
+        public override void Draw(Graphics g)
+        {
+            base.DrawImage(g, Icon);
+        }
+    }
+
+    public class Car2 : Vehicle
+    {
+        static int Speed = 7;
+        static int Width = Settings.BoxSize;
+        Image Icon = Image.FromFile("..\\..\\..\\Icons\\car-2.png");
+
+        public Car2(Direction direction, int startingX, int startingY) : base(direction, startingX, startingY, Width, Speed)
+        {
+            FlipIfDirectionLeft(direction, Icon);
+        }
+
+        public override void Draw(Graphics g)
+        {
+            base.DrawImage(g, Icon);
+        }
+    }
+
+    public class SportCar1 : Vehicle
+    {
+        static int Speed = 10;
+        static int Width = Settings.BoxSize;
+        Image Icon = Image.FromFile("..\\..\\..\\Icons\\sport-car-1.png");
+
+        public SportCar1(Direction direction, int startingX, int startingY) : base(direction, startingX, startingY, Width, Speed)
+        {
+            FlipIfDirectionLeft(direction, Icon);
+        }
+
+        public override void Draw(Graphics g)
+        {
+            base.DrawImage(g, Icon);
+        }
+    }
+
+    public class SportCar2 : Vehicle
+    {
+        static int Speed = 11;
+        static int Width = Settings.BoxSize;
+        Image Icon = Image.FromFile("..\\..\\..\\Icons\\sport-car-2.png");
+
+        public SportCar2(Direction direction, int startingX, int startingY) : base(direction, startingX, startingY, Width, Speed)
+        {
+            FlipIfDirectionLeft(direction, Icon);
+        }
+
+        public override void Draw(Graphics g)
+        {
+            base.DrawImage(g, Icon);
+        }
+    }
+
+    public class Truck : Vehicle
+    {
+        static int Speed = 5;
+        static int Width = Settings.BoxSize * 2;
+        Image Icon = Image.FromFile("..\\..\\..\\Icons\\truck.png");
+
+        public Truck(Direction direction, int startingX, int startingY) : base(direction, startingX, startingY, Width, Speed)
+        {
+            FlipIfDirectionLeft(direction, Icon);
+        }
+
+        public override void Draw(Graphics g)
+        {
+            base.DrawImage(g, Icon);
+        }
+    }
+
+    public class Bus : Vehicle
+    {
+        static int Speed = 6;
+        static int Width = Settings.BoxSize * 2;
+        Image Icon = Image.FromFile("..\\..\\..\\Icons\\bus.png");
+
+        public Bus(Direction direction, int startingX, int startingY) : base(direction, startingX, startingY, Width, Speed)
+        {
+            FlipIfDirectionLeft(direction, Icon);
+        }
+
+        public override void Draw(Graphics g)
+        {
+            base.DrawImage(g, Icon);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Frogger.Models
         public int X = 400;
         public int Y = 700;
         Image FrogImage = Image.FromFile("..\\..\\..\\Icons\\frog.png");
+        Image FrogDeadImage = Image.FromFile("..\\..\\..\\Icons\\frog-dead.png");
 
         public void Draw(Graphics g)
         {
