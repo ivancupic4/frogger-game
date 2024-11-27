@@ -8,14 +8,28 @@ namespace Frogger.Models
 {
     internal class Frog
     {
-        public int X = 400;
-        public int Y = 700;
-        Image FrogImage = Image.FromFile("..\\..\\..\\Icons\\frog.png");
-        Image FrogDeadImage = Image.FromFile("..\\..\\..\\Icons\\frog-dead.png");
+        public int X = Settings.FrogStartingX;
+        public int Y = Settings.FrogStartingY;
+        Image Icon = Image.FromFile("..\\..\\..\\Icons\\frog.png");
+        public bool Dead = false;
 
         public void Draw(Graphics g)
         {
-            g.DrawImage(FrogImage, X, Y, Settings.BoxSize, Settings.BoxSize);
+            g.DrawImage(Icon, X, Y, Settings.BoxSize, Settings.BoxSize);
+        }
+
+        public void Kill()
+        {
+            Dead = true;
+            Icon = Image.FromFile("..\\..\\..\\Icons\\frog-dead.png");
+        }
+
+        public void Reset()
+        {
+            Dead = false;
+            X = Settings.FrogStartingX;
+            Y = Settings.FrogStartingY;
+            Icon = Image.FromFile("..\\..\\..\\Icons\\frog.png");
         }
     }
 }

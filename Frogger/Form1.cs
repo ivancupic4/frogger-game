@@ -39,14 +39,35 @@ namespace Frogger
             DrawMap(g);
             Frog.Draw(g);
             VehicleManager.DrawAndUpdateVehicles(g);
+
+            CheckIsFrogAlive();
         }
+
+        public void CheckIsFrogAlive()
+        {
+            foreach (var vehicle in VehicleManager.Vehicles.Where(v => v.Y == Frog.Y))
+            {
+                if (IsColliding(new Rectangle(vehicle.X, vehicle.Y, vehicle.Width, Settings.BoxSize),
+                                new Rectangle(Frog.X, Frog.Y, Settings.BoxSize, Settings.BoxSize)))
+                    Frog.Kill();
+            }
+        }
+
+        private bool IsColliding(Rectangle rect1, Rectangle rect2)
+            => rect1.X + rect1.Width >= rect2.X &&
+               rect2.X + rect2.Width >= rect1.X &&
+               rect1.Y + rect1.Height >= rect2.Y &&
+               rect2.Y + rect2.Height >= rect1.Y;
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            base.OnKeyDown(e);
+            if (e.KeyCode == Keys.Space)
+                Frog.Reset();
 
-            if (PressedKeys.Contains(e.KeyCode))
+            if (PressedKeys.Contains(e.KeyCode) || Frog.Dead)
                 return;
+
+            base.OnKeyDown(e);
 
             PressedKeys.Add(e.KeyCode);
 
