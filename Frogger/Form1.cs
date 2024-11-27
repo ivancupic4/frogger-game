@@ -10,7 +10,7 @@ namespace Frogger
         Brush Gray = Brushes.DarkGray;
         HashSet<Keys> PressedKeys = new HashSet<Keys>();
         Frog Frog = new Frog();
-        CarManager CarManager = new CarManager();
+        VehicleManager VehicleManager = new VehicleManager();
 
         public Form1()
         {
@@ -36,13 +36,9 @@ namespace Frogger
             base.OnPaint(e);
             Graphics g = e.Graphics;
 
-
             DrawMap(g);
             Frog.Draw(g);
-            CarManager.DrawAndUpdateCars(g);
-
-            //Car.Draw(g);
-            //Car.Update(g, Direction.Right);
+            VehicleManager.DrawAndUpdateVehicles(g);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

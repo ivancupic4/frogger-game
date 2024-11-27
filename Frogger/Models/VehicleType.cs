@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace Frogger.Models
 {
-    public enum Direction
+    internal enum VehicleType
     {
-        Left,
-        Right,
+        Car1,
+        Car2,
+        SportCar1,
+        SportCar2,
+        Bus,
+        Truck
     }
 }
