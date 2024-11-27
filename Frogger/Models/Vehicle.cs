@@ -9,10 +9,10 @@ namespace Frogger.Models
 {
     public abstract class Vehicle
     {
-        public int X = 0;
-        public int Y = 0;
-        public int Speed = 5;
-        public int Width = Settings.BoxSize;
+        public int X;
+        public int Y;
+        public int Speed;
+        public int Width;
         Direction Direction;
 
         public Vehicle(Direction direction, int startingX, int startingY, int width, int speed)

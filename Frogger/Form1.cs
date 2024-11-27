@@ -5,11 +5,8 @@ namespace Frogger
 {
     public partial class Form1 : Form
     {
-        Brush Green = Brushes.DarkGreen;
-        Brush Blue = Brushes.DarkBlue;
-        Brush Gray = Brushes.DarkGray;
-        HashSet<Keys> PressedKeys = new HashSet<Keys>();
         Frog Frog = new Frog();
+        HashSet<Keys> PressedKeys = new HashSet<Keys>();
         VehicleManager VehicleManager = new VehicleManager();
 
         public Form1()
@@ -40,17 +37,23 @@ namespace Frogger
             Frog.Draw(g);
             VehicleManager.DrawAndUpdateVehicles(g);
 
-            CheckIsFrogAlive();
+            FrogCollisionCheck();
         }
 
-        public void CheckIsFrogAlive()
+        public void FrogCollisionCheck()
         {
+            var frogRect = new Rectangle(Frog.X, Frog.Y, Settings.BoxSize, Settings.BoxSize);
+            var waterRect = new Rectangle(0, 150, Settings.WindowWidth, 150);
+
             foreach (var vehicle in VehicleManager.Vehicles.Where(v => v.Y == Frog.Y))
             {
-                if (IsColliding(new Rectangle(vehicle.X, vehicle.Y, vehicle.Width, Settings.BoxSize),
-                                new Rectangle(Frog.X, Frog.Y, Settings.BoxSize, Settings.BoxSize)))
+                var vehicleRect = new Rectangle(vehicle.X, vehicle.Y, vehicle.Width, Settings.BoxSize);
+                if (IsColliding(vehicleRect, frogRect))
                     Frog.Kill();
             }
+
+            if (IsColliding(waterRect, frogRect))
+                Frog.Kill();
         }
 
         private bool IsColliding(Rectangle rect1, Rectangle rect2)
@@ -100,6 +103,10 @@ namespace Frogger
 
         public void DrawMap(Graphics g)
         {
+            Brush Green = Brushes.DarkGreen;
+            Brush Blue = Brushes.DarkBlue;
+            Brush Gray = Brushes.DarkGray;
+
             g.FillRectangle(Green, 0, 0, Settings.WindowWidth, Settings.BoxSize);
 
             g.FillRectangle(Green, 0, Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);

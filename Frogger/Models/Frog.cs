@@ -10,8 +10,15 @@ namespace Frogger.Models
     {
         public int X = Settings.FrogStartingX;
         public int Y = Settings.FrogStartingY;
-        Image Icon = Image.FromFile("..\\..\\..\\Icons\\frog.png");
+        public Image AliveIcon = Image.FromFile("..\\..\\..\\Icons\\frog.png");
+        public Image DeadIcon = Image.FromFile("..\\..\\..\\Icons\\frog-dead.png");
+        public Image Icon = null;
         public bool Dead = false;
+
+        public Frog() 
+        {
+            Icon = AliveIcon;
+        }
 
         public void Draw(Graphics g)
         {
@@ -21,7 +28,7 @@ namespace Frogger.Models
         public void Kill()
         {
             Dead = true;
-            Icon = Image.FromFile("..\\..\\..\\Icons\\frog-dead.png");
+            Icon = DeadIcon;
         }
 
         public void Reset()
@@ -29,7 +36,7 @@ namespace Frogger.Models
             Dead = false;
             X = Settings.FrogStartingX;
             Y = Settings.FrogStartingY;
-            Icon = Image.FromFile("..\\..\\..\\Icons\\frog.png");
+            Icon = AliveIcon;
         }
     }
 }
