@@ -1,27 +1,24 @@
 using System;
+using Frogger.Models;
 
 namespace Frogger
 {
     public partial class Form1 : Form
     {
-        int BoxSize = 50;
-        int FrogPositionX = 400;
-        int FrogPositionY = 700;
-        int WindowWidth = 800;
-        int WindowHeight = 750;
         Brush Green = Brushes.DarkGreen;
         Brush Blue = Brushes.DarkBlue;
-        Brush Purple = Brushes.Gray;
-        private Image FrogImage;
+        Brush Gray = Brushes.DarkGray;
+        HashSet<Keys> PressedKeys = new HashSet<Keys>();
+        Frog Frog = new Frog();
+        CarManager CarManager = new CarManager();
 
         public Form1()
         {
             InitializeComponent();
             this.Text = "Frogger by IvanWolf94";
             this.BackColor = Color.Black;
-            this.ClientSize = new Size(WindowWidth, WindowHeight); // 16 x 15 grid
+            this.ClientSize = new Size(Settings.WindowWidth, Settings.WindowHeight); // 16 x 15 grid
             this.DoubleBuffered = true; // To reduce flickering during rendering
-            FrogImage = Image.FromFile("..\\..\\..\\icons\\frog-icon.png");
 
             var gameTimer = new System.Windows.Forms.Timer();
             gameTimer.Interval = 16; // Approximately 60 FPS
@@ -39,59 +36,71 @@ namespace Frogger
             base.OnPaint(e);
             Graphics g = e.Graphics;
 
+
             DrawMap(g);
-            DrawFrog(g);
+            Frog.Draw(g);
+            CarManager.DrawAndUpdateCars(g);
+
+            //Car.Draw(g);
+            //Car.Update(g, Direction.Right);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
+
+            if (PressedKeys.Contains(e.KeyCode))
+                return;
+
+            PressedKeys.Add(e.KeyCode);
+
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    if (FrogPositionY - BoxSize >= 0)
-                        FrogPositionY -= BoxSize;
+                    if (Frog.Y - Settings.BoxSize >= 0)
+                        Frog.Y -= Settings.BoxSize;
                     break;
                 case Keys.Down:
-                    if (FrogPositionY + BoxSize < WindowHeight)
-                        FrogPositionY += BoxSize;
+                    if (Frog.Y + Settings.BoxSize < Settings.WindowHeight)
+                        Frog.Y += Settings.BoxSize;
                     break;
                 case Keys.Left:
-                    if (FrogPositionX - BoxSize >= 0)
-                        FrogPositionX -= BoxSize;
+                    if (Frog.X - Settings.BoxSize >= 0)
+                        Frog.X -= Settings.BoxSize;
                     break;
                 case Keys.Right:
-                    if (FrogPositionX + BoxSize < WindowWidth)
-                        FrogPositionX += BoxSize;
+                    if (Frog.X + Settings.BoxSize < Settings.WindowWidth)
+                        Frog.X += Settings.BoxSize;
                     break;
             }
         }
 
-        public void DrawFrog(Graphics g)
+        protected override void OnKeyUp(KeyEventArgs e)
         {
-            g.DrawImage(FrogImage, FrogPositionX, FrogPositionY, BoxSize, BoxSize);
+            base.OnKeyUp(e);
+            PressedKeys.Remove(e.KeyCode);
         }
 
         public void DrawMap(Graphics g)
         {
-            g.FillRectangle(Green, 0, 0, WindowWidth, BoxSize);
+            g.FillRectangle(Green, 0, 0, Settings.WindowWidth, Settings.BoxSize);
 
-            g.FillRectangle(Green, 0, BoxSize, BoxSize, BoxSize);
-            g.FillRectangle(Blue, BoxSize, BoxSize, BoxSize*2, BoxSize);
-            g.FillRectangle(Green, BoxSize * 3, BoxSize, BoxSize, BoxSize);
-            g.FillRectangle(Blue, BoxSize * 4, BoxSize, BoxSize * 2, BoxSize);
-            g.FillRectangle(Green, BoxSize * 6, BoxSize, BoxSize, BoxSize);
-            g.FillRectangle(Blue, BoxSize * 7, BoxSize, BoxSize * 2, BoxSize);
-            g.FillRectangle(Green, BoxSize * 9, BoxSize, BoxSize, BoxSize);
-            g.FillRectangle(Blue, BoxSize * 10, BoxSize, BoxSize * 2, BoxSize);
-            g.FillRectangle(Green, BoxSize * 12, BoxSize, BoxSize, BoxSize);
-            g.FillRectangle(Blue, BoxSize * 13, BoxSize, BoxSize * 2, BoxSize);
-            g.FillRectangle(Green, BoxSize * 15, BoxSize, BoxSize, BoxSize);
+            g.FillRectangle(Green, 0, Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
+            g.FillRectangle(Blue, Settings.BoxSize, Settings.BoxSize, Settings.BoxSize*2, Settings.BoxSize);
+            g.FillRectangle(Green, Settings.BoxSize * 3, Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
+            g.FillRectangle(Blue, Settings.BoxSize * 4, Settings.BoxSize, Settings.BoxSize * 2, Settings.BoxSize);
+            g.FillRectangle(Green, Settings.BoxSize * 6, Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
+            g.FillRectangle(Blue, Settings.BoxSize * 7, Settings.BoxSize, Settings.BoxSize * 2, Settings.BoxSize);
+            g.FillRectangle(Green, Settings.BoxSize * 9, Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
+            g.FillRectangle(Blue, Settings.BoxSize * 10, Settings.BoxSize, Settings.BoxSize * 2, Settings.BoxSize);
+            g.FillRectangle(Green, Settings.BoxSize * 12, Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
+            g.FillRectangle(Blue, Settings.BoxSize * 13, Settings.BoxSize, Settings.BoxSize * 2, Settings.BoxSize);
+            g.FillRectangle(Green, Settings.BoxSize * 15, Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
 
-            g.FillRectangle(Blue, 0, BoxSize * 2, WindowWidth, 250);
+            g.FillRectangle(Blue, 0, Settings.BoxSize * 2, Settings.WindowWidth, 250);
 
-            g.FillRectangle(Purple, 0, WindowHeight - BoxSize * 8, WindowWidth, BoxSize);
-            g.FillRectangle(Purple, 0, WindowHeight - BoxSize, WindowWidth, BoxSize);
+            g.FillRectangle(Gray, 0, Settings.WindowHeight - Settings.BoxSize * 8, Settings.WindowWidth, Settings.BoxSize);
+            g.FillRectangle(Gray, 0, Settings.WindowHeight - Settings.BoxSize, Settings.WindowWidth, Settings.BoxSize);
         }
     }
 }
