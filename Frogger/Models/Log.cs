@@ -6,44 +6,26 @@ using System.Threading.Tasks;
 
 namespace Frogger.Models
 {
-    public class Log
+    public class Log : MovingObject
     {
-        public int X;
-        public int Y;
-        public int Speed;
-        public int Width;
-        Direction Direction;
-        
+        static Direction Direction = Direction.Right;
+        LogWidth WidthEnum;
+        Image Icon2 = Image.FromFile(Settings.IconsFolder + "log-2.png");
+        Image Icon4 = Image.FromFile(Settings.IconsFolder + "log-4.png");
+        Image Icon6 = Image.FromFile(Settings.IconsFolder + "log-6.png");
 
-        public Log(Direction direction, int startingX, int startingY, int width, int speed)
+        public Log(LogWidth width, int startingX, int startingY, int speed)
+            : base(startingX, startingY, speed, (int)width, Direction)
         {
-            X = startingX;
-            Y = startingY;
-            Speed = speed;
-            Width = width;
-            Direction = direction;
+            WidthEnum = width;
         }
 
         public void Draw(Graphics g)
         {
-            //var icon = ;
-            //g.DrawImage(icon, X, Y, Width, Settings.BoxSize);
-        }
-
-        public void Move()
-        {
-            if (Direction == Direction.Right)
-            {
-                X += Speed;
-                if (X > Settings.WindowWidth)
-                    X = -Width;
-            }
-            if (Direction == Direction.Left)
-            {
-                X -= Speed;
-                if (X < -Width)
-                    X = Settings.WindowWidth;
-            }
+            var icon = WidthEnum == LogWidth.Short ? Icon2 :
+                       WidthEnum == LogWidth.Medium ? Icon4 : 
+                       WidthEnum == LogWidth.Long ? Icon6 : null;
+            base.Draw(g, icon);
         }
     }
 }

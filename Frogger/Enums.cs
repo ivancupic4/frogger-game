@@ -4,11 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Frogger.Models
+namespace Frogger
 {
     public enum Direction
     {
         Left,
         Right,
+    }
+
+    public enum LogWidth
+    {
+        Short = Settings.BoxSize * 2,
+        Medium = Settings.BoxSize * 4,
+        Long = Settings.BoxSize * 6
     }
 }

@@ -14,7 +14,7 @@ namespace Frogger
             InitializeComponent();
             this.Text = "Frogger by IvanWolf94";
             this.BackColor = Color.Black;
-            this.ClientSize = new Size(Settings.WindowWidth, Settings.WindowHeight); // 16 x 15 grid
+            this.ClientSize = new Size(Settings.WindowWidth, Settings.WindowHeight);
             this.DoubleBuffered = true; // To reduce flickering during rendering
 
             var gameTimer = new System.Windows.Forms.Timer();
@@ -34,13 +34,14 @@ namespace Frogger
             Graphics g = e.Graphics;
 
             DrawMap(g);
+            MovingObjectManager.DrawAndUpdateLogs(g);
             Frog.Draw(g);
             MovingObjectManager.DrawAndUpdateVehicles(g);
 
-            FrogCollisionCheck();
+            CollisionCheck();
         }
 
-        public void FrogCollisionCheck()
+        public void CollisionCheck()
         {
             var frogRect = new Rectangle(Frog.X, Frog.Y, Settings.BoxSize, Settings.BoxSize);
             var waterRect = new Rectangle(0, 150, Settings.WindowWidth, 150);
@@ -52,8 +53,12 @@ namespace Frogger
                     Frog.Kill();
             }
 
-            if (IsColliding(waterRect, frogRect))
-                Frog.Kill();
+            foreach (var log in MovingObjectManager.Logs)
+            {
+                var logRect = new Rectangle(log.X, log.Y, log.Width, Settings.BoxSize);
+                if (!IsColliding(logRect, frogRect) && IsColliding(waterRect, frogRect))
+                    Frog.Kill();
+            }
         }
 
         private bool IsColliding(Rectangle rect1, Rectangle rect2)

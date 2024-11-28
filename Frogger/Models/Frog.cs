@@ -11,8 +11,8 @@ namespace Frogger.Models
         public int X = Settings.FrogStartingX;
         public int Y = Settings.FrogStartingY;
         public bool Dead = false;
-        Image AliveIcon = Image.FromFile("..\\..\\..\\Icons\\frog.png");
-        Image DeadIcon = Image.FromFile("..\\..\\..\\Icons\\frog-dead.png");
+        Image AliveIcon = Image.FromFile(Settings.IconsFolder + "frog.png");
+        Image DeadIcon = Image.FromFile(Settings.IconsFolder + "frog-dead.png");
         Image Icon = null;
 
         public Frog() 
