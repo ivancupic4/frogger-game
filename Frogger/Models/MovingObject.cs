@@ -29,6 +29,9 @@ namespace Frogger.Models
             g.DrawImage(icon, X, Y, Width, Settings.BoxSize);
         }
 
+        public Rectangle Rect()
+            => new Rectangle(X, Y, Width, Settings.BoxSize);
+
         public void Move()
         {
             if (Direction == Direction.Right)

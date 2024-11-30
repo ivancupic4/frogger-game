@@ -11,7 +11,7 @@ namespace Frogger.Models
         public int X = Settings.FrogStartingX;
         public int Y = Settings.FrogStartingY;
         public bool Dead = false;
-        Image AliveIcon = Image.FromFile(Settings.IconsFolder + "frog.png");
+        public Image AliveIcon = Image.FromFile(Settings.IconsFolder + "frog.png");
         Image DeadIcon = Image.FromFile(Settings.IconsFolder + "frog-dead.png");
         Image Icon = null;
 
@@ -24,6 +24,9 @@ namespace Frogger.Models
         {
             g.DrawImage(Icon, X, Y, Settings.BoxSize, Settings.BoxSize);
         }
+
+        public Rectangle Rect()
+            => new Rectangle(X, Y, Settings.BoxSize, Settings.BoxSize);
 
         public void Kill()
         {

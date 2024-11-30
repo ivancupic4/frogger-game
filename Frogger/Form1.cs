@@ -8,6 +8,8 @@ namespace Frogger
         Frog Frog = new Frog();
         HashSet<Keys> PressedKeys = new HashSet<Keys>();
         MovingObjectManager MovingObjectManager = new MovingObjectManager();
+        List<Rectangle> RemainingEndGameAreas = new List<Rectangle> (Settings.EndGameAreas);
+        Graphics g;
 
         public Form1()
         {
@@ -31,34 +33,30 @@ namespace Frogger
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            Graphics g = e.Graphics;
+            g = e.Graphics;
 
             DrawMap(g);
             MovingObjectManager.DrawAndUpdateLogs(g);
             Frog.Draw(g);
             MovingObjectManager.DrawAndUpdateVehicles(g);
 
+            DrawEndGameWaterLillyFrogs();
             CollisionCheck();
         }
 
         public void CollisionCheck()
         {
-            var frogRect = new Rectangle(Frog.X, Frog.Y, Settings.BoxSize, Settings.BoxSize);
-
             foreach (var vehicle in MovingObjectManager.Vehicles.Where(v => v.Y == Frog.Y))
             {
-                var vehicleRect = new Rectangle(vehicle.X, vehicle.Y, vehicle.Width, Settings.BoxSize);
-                if (IsColliding(vehicleRect, frogRect))
+                if (IsColliding(vehicle.Rect(), Frog.Rect()))
                      Frog.Kill();
             }
 
-            var waterAreaRect = new Rectangle(0, 150, Settings.WindowWidth, 150);
-            var isFrogInWaterArea = IsColliding(waterAreaRect, frogRect);
+            var isFrogInWaterArea = IsColliding(Settings.WaterAreaRect, Frog.Rect());
             var isFrogOnLog = false;
             foreach (var log in MovingObjectManager.Logs.Where(l => l.Y == Frog.Y))
             {
-                var logRect = new Rectangle(log.X, log.Y, log.Width, Settings.BoxSize);
-                if (IsColliding(logRect, frogRect))
+                if (IsColliding(log.Rect(), Frog.Rect()))
                 {
                     isFrogOnLog = true;
                     Frog.MoveWithLog(log);
@@ -66,16 +64,42 @@ namespace Frogger
                 }
             }
 
-            var frogOutOfMapBounds = Frog.X + Settings.BoxSize > Settings.WindowWidth;
+            var frogOutOfMapBounds = Frog.X + Settings.BoxSize / 2 > Settings.WindowWidth;
             if ((isFrogInWaterArea && !isFrogOnLog) || frogOutOfMapBounds)
                 Frog.Kill();
         }
 
+        public void EndGameAreaCheck()
+        {
+            foreach (var areaRect in RemainingEndGameAreas)
+            {
+                if (IsColliding(areaRect, Frog.Rect()))
+                {
+                    RemainingEndGameAreas.Remove(areaRect);
+                    Frog.Reset();
+                    break;
+                }
+            }
+        }
+
+        private void DrawEndGameWaterLillyFrogs()
+        {
+            var icon = new Frog().AliveIcon;
+            icon.RotateFlip(RotateFlipType.Rotate180FlipX);
+            var frogsOnWaterLillies = new List<Rectangle> (Settings.EndGameAreas);
+            frogsOnWaterLillies.RemoveAll(RemainingEndGameAreas.Contains);
+            foreach (var areaRect in frogsOnWaterLillies)
+            {
+                int middleOfEndGameRectangle = areaRect.X + (areaRect.Width / 2 - Settings.BoxSize / 2);
+                g.DrawImage(icon, middleOfEndGameRectangle, areaRect.Y, Settings.BoxSize, Settings.BoxSize);
+            }
+        }
+
         private bool IsColliding(Rectangle rect1, Rectangle rect2)
-            => rect1.X + rect1.Width >= rect2.X &&
-               rect2.X + rect2.Width >= rect1.X &&
-               rect1.Y + rect1.Height >= rect2.Y &&
-               rect2.Y + rect2.Height >= rect1.Y;
+            => rect1.X + rect1.Width > rect2.X &&
+               rect2.X + rect2.Width > rect1.X &&
+               rect1.Y + rect1.Height > rect2.Y &&
+               rect2.Y + rect2.Height > rect1.Y;
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -100,14 +124,20 @@ namespace Frogger
                         Frog.Y += Settings.BoxSize;
                     break;
                 case Keys.Left:
-                    if (Frog.X - Settings.BoxSize >= 0)
+                    if (Frog.X - Settings.BoxSize < 0)
+                        Frog.X = 0;
+                    else
                         Frog.X -= Settings.BoxSize;
                     break;
                 case Keys.Right:
-                    if (Frog.X + Settings.BoxSize < Settings.WindowWidth)
+                    if (Frog.X + Settings.BoxSize * 2 > Settings.WindowWidth)
+                        Frog.X = Settings.WindowWidth - Settings.BoxSize;
+                    else
                         Frog.X += Settings.BoxSize;
                     break;
             }
+
+            EndGameAreaCheck();
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
@@ -123,20 +153,14 @@ namespace Frogger
             Brush Gray = Brushes.DarkGray;
 
             g.FillRectangle(Green, 0, 0, Settings.WindowWidth, Settings.BoxSize);
+            g.FillRectangle(Blue, Settings.WaterAreaRect);
 
             g.FillRectangle(Green, 0, Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
-            g.FillRectangle(Blue, Settings.BoxSize, Settings.BoxSize, Settings.BoxSize*2, Settings.BoxSize);
             g.FillRectangle(Green, Settings.BoxSize * 3, Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
-            g.FillRectangle(Blue, Settings.BoxSize * 4, Settings.BoxSize, Settings.BoxSize * 2, Settings.BoxSize);
             g.FillRectangle(Green, Settings.BoxSize * 6, Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
-            g.FillRectangle(Blue, Settings.BoxSize * 7, Settings.BoxSize, Settings.BoxSize * 2, Settings.BoxSize);
             g.FillRectangle(Green, Settings.BoxSize * 9, Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
-            g.FillRectangle(Blue, Settings.BoxSize * 10, Settings.BoxSize, Settings.BoxSize * 2, Settings.BoxSize);
             g.FillRectangle(Green, Settings.BoxSize * 12, Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
-            g.FillRectangle(Blue, Settings.BoxSize * 13, Settings.BoxSize, Settings.BoxSize * 2, Settings.BoxSize);
             g.FillRectangle(Green, Settings.BoxSize * 15, Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
-
-            g.FillRectangle(Blue, 0, Settings.BoxSize * 2, Settings.WindowWidth, 250);
 
             g.FillRectangle(Gray, 0, Settings.WindowHeight - Settings.BoxSize * 8, Settings.WindowWidth, Settings.BoxSize);
             g.FillRectangle(Gray, 0, Settings.WindowHeight - Settings.BoxSize, Settings.WindowWidth, Settings.BoxSize);
