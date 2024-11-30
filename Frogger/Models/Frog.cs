@@ -8,16 +8,21 @@ namespace Frogger.Models
 {
     public class Frog
     {
+        const string FrogImageName = "frog.png";
+        const string FrogDeadImageName = "frog-dead.png";
         public int X = Settings.FrogStartingX;
         public int Y = Settings.FrogStartingY;
         public bool Dead = false;
-        public Image AliveIcon = Image.FromFile(Settings.IconsFolder + "frog.png");
-        Image DeadIcon = Image.FromFile(Settings.IconsFolder + "frog-dead.png");
+        public Image AliveIcon = Image.FromFile(Settings.IconsFolder + FrogImageName);
+        public Image EndGameIcon;
+        Image DeadIcon = Image.FromFile(Settings.IconsFolder + FrogDeadImageName);
         Image Icon = null;
 
-        public Frog() 
+        public Frog()
         {
             Icon = AliveIcon;
+            EndGameIcon = Image.FromFile(Settings.IconsFolder + FrogImageName);
+            EndGameIcon.RotateFlip(RotateFlipType.Rotate180FlipX);
         }
 
         public void Draw(Graphics g)

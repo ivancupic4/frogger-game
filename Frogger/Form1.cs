@@ -84,14 +84,12 @@ namespace Frogger
 
         private void DrawEndGameWaterLillyFrogs()
         {
-            var icon = new Frog().AliveIcon;
-            icon.RotateFlip(RotateFlipType.Rotate180FlipX);
             var frogsOnWaterLillies = new List<Rectangle> (Settings.EndGameAreas);
             frogsOnWaterLillies.RemoveAll(RemainingEndGameAreas.Contains);
             foreach (var areaRect in frogsOnWaterLillies)
             {
                 int middleOfEndGameRectangle = areaRect.X + (areaRect.Width / 2 - Settings.BoxSize / 2);
-                g.DrawImage(icon, middleOfEndGameRectangle, areaRect.Y, Settings.BoxSize, Settings.BoxSize);
+                g.DrawImage(Frog.EndGameIcon, middleOfEndGameRectangle, areaRect.Y, Settings.BoxSize, Settings.BoxSize);
             }
         }
 
