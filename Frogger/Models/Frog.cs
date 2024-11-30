@@ -38,5 +38,12 @@ namespace Frogger.Models
             Y = Settings.FrogStartingY;
             Icon = AliveIcon;
         }
+
+        public void MoveWithLog(Log log)
+        {
+            if (Dead)
+                return;
+            X += log.Speed;
+        }
     }
 }

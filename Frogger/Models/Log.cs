@@ -8,7 +8,7 @@ namespace Frogger.Models
 {
     public class Log : MovingObject
     {
-        static Direction Direction = Direction.Right;
+        public static Direction Direction = Direction.Right;
         LogWidth WidthEnum;
         Image Icon2 = Image.FromFile(Settings.IconsFolder + "log-2.png");
         Image Icon4 = Image.FromFile(Settings.IconsFolder + "log-4.png");

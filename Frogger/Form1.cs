@@ -44,21 +44,31 @@ namespace Frogger
         public void CollisionCheck()
         {
             var frogRect = new Rectangle(Frog.X, Frog.Y, Settings.BoxSize, Settings.BoxSize);
-            var waterRect = new Rectangle(0, 150, Settings.WindowWidth, 150);
 
             foreach (var vehicle in MovingObjectManager.Vehicles.Where(v => v.Y == Frog.Y))
             {
                 var vehicleRect = new Rectangle(vehicle.X, vehicle.Y, vehicle.Width, Settings.BoxSize);
                 if (IsColliding(vehicleRect, frogRect))
-                    Frog.Kill();
+                     Frog.Kill();
             }
 
-            foreach (var log in MovingObjectManager.Logs)
+            var waterAreaRect = new Rectangle(0, 150, Settings.WindowWidth, 150);
+            var isFrogInWaterArea = IsColliding(waterAreaRect, frogRect);
+            var isFrogOnLog = false;
+            foreach (var log in MovingObjectManager.Logs.Where(l => l.Y == Frog.Y))
             {
                 var logRect = new Rectangle(log.X, log.Y, log.Width, Settings.BoxSize);
-                if (!IsColliding(logRect, frogRect) && IsColliding(waterRect, frogRect))
-                    Frog.Kill();
+                if (IsColliding(logRect, frogRect))
+                {
+                    isFrogOnLog = true;
+                    Frog.MoveWithLog(log);
+                    break;
+                }
             }
+
+            var frogOutOfMapBounds = Frog.X + Settings.BoxSize > Settings.WindowWidth;
+            if ((isFrogInWaterArea && !isFrogOnLog) || frogOutOfMapBounds)
+                Frog.Kill();
         }
 
         private bool IsColliding(Rectangle rect1, Rectangle rect2)
