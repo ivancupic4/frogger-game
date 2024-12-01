@@ -16,6 +16,7 @@ namespace Frogger
         public const int FrogStartingY = 700;
         public static string IconsFolder = "..\\..\\..\\Icons\\";
         public static Rectangle WaterAreaRect = new Rectangle(0, BoxSize, Settings.WindowWidth, 300);
+        public static Image WaterLilyIcon = Image.FromFile(IconsFolder + "water-lily.png");
         public static List<Rectangle> EndGameAreas = new List<Rectangle>
         {
             new Rectangle (BoxSize * 1, BoxSize, BoxSize * 2, BoxSize),

@@ -8,8 +8,10 @@ namespace Frogger
 {
     public enum Direction
     {
+        Up,
+        Down,
         Left,
-        Right,
+        Right
     }
 
     public enum LogWidth

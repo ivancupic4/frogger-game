@@ -29,8 +29,7 @@ namespace Frogger.Models
             g.DrawImage(icon, X, Y, Width, Settings.BoxSize);
         }
 
-        public Rectangle Rect()
-            => new Rectangle(X, Y, Width, Settings.BoxSize);
+        public Rectangle Rect() => new Rectangle(X, Y, Width, Settings.BoxSize);
 
         public void Move()
         {
@@ -51,7 +50,7 @@ namespace Frogger.Models
         public void FlipIfDirectionLeft(Direction direction, Image icon)
         {
             if (direction == Direction.Left)
-                icon.RotateFlip(RotateFlipType.Rotate180FlipY);
+                icon.RotateFlip(RotateFlipType.RotateNoneFlipX);
         }
     }
 }

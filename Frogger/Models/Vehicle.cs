@@ -43,7 +43,7 @@ namespace Frogger.Models
             FlipIfDirectionLeft(direction, Icon);
         }
 
-        public override void Draw(Graphics g)
+        public override void Draw(Graphics g) 
             => Draw(g, Icon);
     }
 

@@ -25,7 +25,7 @@ namespace Frogger.Models
             Vehicles.Add(new Truck(Direction.Right, HalfWidth(), Row(6)));
             Vehicles.Add(new Bus(Direction.Left, ZeroWidth(), Row(7)));
             Vehicles.Add(new Bus(Direction.Left, HalfWidth(), Row(7)));
-
+            
             Logs.Add(new Log(LogWidth.Short, ZeroWidth(), Row(9), 5));
             Logs.Add(new Log(LogWidth.Medium, HalfWidth(), Row(9), 5));
             Logs.Add(new Log(LogWidth.Long, ZeroWidth(), Row(10), 2));
@@ -56,19 +56,10 @@ namespace Frogger.Models
             }
         }
 
-        public int Row(int row)
-        {
-            return Settings.WindowHeight - Settings.BoxSize * row;
-        }
+        public int Row(int row) => Settings.WindowHeight - Settings.BoxSize * row;
 
-        public int ZeroWidth()
-        {
-            return 0;
-        }
+        public int ZeroWidth() => 0;
 
-        public int HalfWidth()
-        {
-            return Settings.WindowWidth / 2;
-        }
+        public int HalfWidth() => Settings.WindowWidth / 2;
     }
 }

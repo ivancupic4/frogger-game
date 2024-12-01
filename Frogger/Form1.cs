@@ -36,12 +36,18 @@ namespace Frogger
             g = e.Graphics;
 
             DrawMap(g);
+
+            // draw frog before or after logs, to display dead frog as underwater
+            if (Frog.Dead)
+                Frog.Draw(g);
             MovingObjectManager.DrawAndUpdateLogs(g);
-            Frog.Draw(g);
+            if (!Frog.Dead)
+                Frog.Draw(g);
+
             MovingObjectManager.DrawAndUpdateVehicles(g);
 
-            DrawEndGameWaterLillyFrogs();
             CollisionCheck();
+            DrawWaterLilyFrogs();
         }
 
         public void CollisionCheck()
@@ -82,14 +88,14 @@ namespace Frogger
             }
         }
 
-        private void DrawEndGameWaterLillyFrogs()
+        private void DrawWaterLilyFrogs()
         {
             var frogsOnWaterLillies = new List<Rectangle> (Settings.EndGameAreas);
             frogsOnWaterLillies.RemoveAll(RemainingEndGameAreas.Contains);
             foreach (var areaRect in frogsOnWaterLillies)
             {
                 int middleOfEndGameRectangle = areaRect.X + (areaRect.Width / 2 - Settings.BoxSize / 2);
-                g.DrawImage(Frog.EndGameIcon, middleOfEndGameRectangle, areaRect.Y, Settings.BoxSize, Settings.BoxSize);
+                g.DrawImage(Frog.DownIcon, middleOfEndGameRectangle, areaRect.Y, Settings.BoxSize, Settings.BoxSize);
             }
         }
 
@@ -108,31 +114,14 @@ namespace Frogger
                 return;
 
             base.OnKeyDown(e);
-
             PressedKeys.Add(e.KeyCode);
 
             switch (e.KeyCode)
             {
-                case Keys.Up:
-                    if (Frog.Y - Settings.BoxSize >= 0)
-                        Frog.Y -= Settings.BoxSize;
-                    break;
-                case Keys.Down:
-                    if (Frog.Y + Settings.BoxSize < Settings.WindowHeight)
-                        Frog.Y += Settings.BoxSize;
-                    break;
-                case Keys.Left:
-                    if (Frog.X - Settings.BoxSize < 0)
-                        Frog.X = 0;
-                    else
-                        Frog.X -= Settings.BoxSize;
-                    break;
-                case Keys.Right:
-                    if (Frog.X + Settings.BoxSize * 2 > Settings.WindowWidth)
-                        Frog.X = Settings.WindowWidth - Settings.BoxSize;
-                    else
-                        Frog.X += Settings.BoxSize;
-                    break;
+                case Keys.Up: Frog.MoveUp(); break;
+                case Keys.Down: Frog.MoveDown(); break;
+                case Keys.Left: Frog.MoveLeft(); break;
+                case Keys.Right: Frog.MoveRight(); break;
             }
 
             EndGameAreaCheck();
@@ -152,6 +141,12 @@ namespace Frogger
 
             g.FillRectangle(Green, 0, 0, Settings.WindowWidth, Settings.BoxSize);
             g.FillRectangle(Blue, Settings.WaterAreaRect);
+
+            g.DrawImage(Settings.WaterLilyIcon, (int)(Settings.BoxSize * 1.5), Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
+            g.DrawImage(Settings.WaterLilyIcon, (int)(Settings.BoxSize * 4.5), Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
+            g.DrawImage(Settings.WaterLilyIcon, (int)(Settings.BoxSize * 7.5), Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
+            g.DrawImage(Settings.WaterLilyIcon, (int)(Settings.BoxSize * 10.5), Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
+            g.DrawImage(Settings.WaterLilyIcon, (int)(Settings.BoxSize * 13.5), Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
 
             g.FillRectangle(Green, 0, Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
             g.FillRectangle(Green, Settings.BoxSize * 3, Settings.BoxSize, Settings.BoxSize, Settings.BoxSize);
