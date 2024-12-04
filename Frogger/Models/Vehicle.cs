@@ -11,8 +11,6 @@ namespace Frogger.Models
     {
         public Vehicle(int startingX, int startingY, int width, int speed, Direction direction) 
             : base(startingX, startingY, width, speed, direction) { }
-
-        public abstract void Draw(Graphics g);
     }
 
     public class Car1 : Vehicle

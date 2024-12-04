@@ -20,7 +20,7 @@ namespace Frogger.Models
             FlipIfDirectionLeft(Direction, Icon);
         }
 
-        public void Draw(Graphics g)
+        public override void Draw(Graphics g)
         {
             for (int i = 0; i < (int)Width; i++)
             {

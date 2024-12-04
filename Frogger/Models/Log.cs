@@ -20,7 +20,7 @@ namespace Frogger.Models
             Width = width;
         }
 
-        public void Draw(Graphics g)
+        public override void Draw(Graphics g)
         {
             var icon = Width == Width.Short ? Icon2 :
                        Width == Width.Medium ? Icon4 :

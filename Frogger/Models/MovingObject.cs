@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Frogger.Models
 {
-    public class MovingObject
+    public abstract class MovingObject
     {
         public int X;
         public int Y;
@@ -28,6 +28,8 @@ namespace Frogger.Models
         {
             g.DrawImage(icon, X, Y, Width, Settings.BoxSize);
         }
+
+        public abstract void Draw(Graphics g);
 
         public Rectangle Rect() => new Rectangle(X, Y, Width, Settings.BoxSize);
 

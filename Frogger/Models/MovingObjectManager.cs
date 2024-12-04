@@ -40,37 +40,30 @@ namespace Frogger.Models
             Logs.Add(new Log(Width.Short, HalfWidth(), Row(13), 5));
         }
 
-        public void DrawAndUpdateVehicles(Graphics g)
+        public void DrawAndUpdate(MovingObjectType movingObjectType, Graphics g)
         {
-            foreach (var vehicle in Vehicles)
+            var movingObjects = new List<MovingObject>();
+
+            if (movingObjectType == MovingObjectType.Vehicle)
+                movingObjects.AddRange(Vehicles);
+            else if (movingObjectType == MovingObjectType.Log)
+                movingObjects.AddRange(Logs);
+            else if (movingObjectType == MovingObjectType.Turtle)
+                movingObjects.AddRange(Turtles);
+
+            foreach (var movingObject in movingObjects)
             {
-                vehicle.Draw(g);
-                vehicle.Move();
+                movingObject.Draw(g);
+                movingObject.Move();
             }
         }
 
-        public void DrawAndUpdateTurtles(Graphics g)
-        {
-            foreach (var turtle in Turtles)
-            {
-                turtle.Draw(g);
-                turtle.Move();
-            }
-        }
-
-        public void DrawAndUpdateLogs(Graphics g)
-        {
-            foreach (var log in Logs)
-            {
-                log.Draw(g);
-                log.Move();
-            }
-        }
+        public void DrawAndUpdateVehicles(Graphics g) => DrawAndUpdate(MovingObjectType.Vehicle, g);
+        public void DrawAndUpdateTurtles(Graphics g) => DrawAndUpdate(MovingObjectType.Turtle, g);
+        public void DrawAndUpdateLogs(Graphics g) => DrawAndUpdate(MovingObjectType.Log, g);
 
         public int Row(int row) => Settings.WindowHeight - Settings.BoxSize * row;
-
         public int Beginning() => 0;
-
         public int HalfWidth() => Settings.WindowWidth / 2;
     }
 }

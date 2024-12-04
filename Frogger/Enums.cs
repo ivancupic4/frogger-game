@@ -20,4 +20,11 @@ namespace Frogger
         Medium = 3,
         Long = 4
     }
+
+    public enum MovingObjectType
+    {
+        Log,
+        Turtle,
+        Vehicle
+    }
 }
