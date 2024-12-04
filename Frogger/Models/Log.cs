@@ -8,23 +8,23 @@ namespace Frogger.Models
 {
     public class Log : MovingObject
     {
-        public static Direction Direction = Direction.Right;
-        LogWidth WidthEnum;
+        static Direction Direction = Direction.Right;
+        Width Width;
         Image Icon2 = Image.FromFile(Settings.IconsFolder + "log-2.png");
         Image Icon4 = Image.FromFile(Settings.IconsFolder + "log-4.png");
         Image Icon6 = Image.FromFile(Settings.IconsFolder + "log-6.png");
 
-        public Log(LogWidth width, int startingX, int startingY, int speed)
-            : base(startingX, startingY, speed, (int)width, Direction)
+        public Log(Width width, int startingX, int startingY, int speed)
+            : base(startingX, startingY, speed, (int)width * Settings.BoxSize, Direction)
         {
-            WidthEnum = width;
+            Width = width;
         }
 
         public void Draw(Graphics g)
         {
-            var icon = WidthEnum == LogWidth.Short ? Icon2 :
-                       WidthEnum == LogWidth.Medium ? Icon4 : 
-                       WidthEnum == LogWidth.Long ? Icon6 : null;
+            var icon = Width == Width.Short ? Icon2 :
+                       Width == Width.Medium ? Icon4 :
+                       Width == Width.Long ? Icon6 : null;
             base.Draw(g, icon);
         }
     }

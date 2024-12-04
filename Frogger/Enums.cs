@@ -14,10 +14,10 @@ namespace Frogger
         Right
     }
 
-    public enum LogWidth
+    public enum Width
     {
-        Short = Settings.BoxSize * 2,
-        Medium = Settings.BoxSize * 4,
-        Long = Settings.BoxSize * 6
+        Short = 2,
+        Medium = 3,
+        Long = 4
     }
 }

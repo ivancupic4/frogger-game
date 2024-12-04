@@ -13,7 +13,7 @@ namespace Frogger.Models
         public int Y;
         public int Speed;
         public int Width;
-        Direction Direction;
+        public Direction Direction;
 
         public MovingObject(int x, int y, int speed, int width, Direction direction)
         {

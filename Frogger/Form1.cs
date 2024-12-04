@@ -40,7 +40,10 @@ namespace Frogger
             // draw frog before or after logs, to display dead frog as underwater
             if (Frog.Dead)
                 Frog.Draw(g);
+
             MovingObjectManager.DrawAndUpdateLogs(g);
+            MovingObjectManager.DrawAndUpdateTurtles(g);
+
             if (!Frog.Dead)
                 Frog.Draw(g);
 
@@ -59,19 +62,23 @@ namespace Frogger
             }
 
             var isFrogInWaterArea = IsColliding(Settings.WaterAreaRect, Frog.Rect());
-            var isFrogOnLog = false;
-            foreach (var log in MovingObjectManager.Logs.Where(l => l.Y == Frog.Y))
+            var isFrogOnObjectToMoveWith = false;
+            var movingObjectToMoveWith = new List<MovingObject>();
+            movingObjectToMoveWith.AddRange(MovingObjectManager.Logs.Where(l => l.Y == Frog.Y));
+            movingObjectToMoveWith.AddRange(MovingObjectManager.Turtles.Where(l => l.Y == Frog.Y));
+            foreach (var movingObject in movingObjectToMoveWith)
             {
-                if (IsColliding(log.Rect(), Frog.Rect()))
+                if (IsColliding(movingObject.Rect(), Frog.Rect()))
                 {
-                    isFrogOnLog = true;
-                    Frog.MoveWithLog(log);
+                    isFrogOnObjectToMoveWith = true;
+                    Frog.MoveWithObject(movingObject);
                     break;
                 }
             }
 
-            var frogOutOfMapBounds = Frog.X + Settings.BoxSize / 2 > Settings.WindowWidth;
-            if ((isFrogInWaterArea && !isFrogOnLog) || frogOutOfMapBounds)
+            var frogOutOfMapBounds = (Frog.X + Settings.BoxSize / 2 > Settings.WindowWidth)
+                                     || (Frog.X + Settings.BoxSize / 2 < 0);
+            if ((isFrogInWaterArea && !isFrogOnObjectToMoveWith) || frogOutOfMapBounds)
                 Frog.Kill();
         }
 

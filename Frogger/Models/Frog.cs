@@ -69,19 +69,17 @@ namespace Frogger.Models
         {
             Icon = LeftIcon;
             Direction = Direction.Left;
-            if (X - Settings.BoxSize < 0)
-                X = 0;
-            else
-                X -= Settings.BoxSize;
+            X = X - Settings.BoxSize < 0
+                ? 0 
+                : X - Settings.BoxSize;
         }
         public void MoveRight() 
         { 
             Icon = RightIcon;
             Direction = Direction.Right;
-            if (X + Settings.BoxSize * 2 > Settings.WindowWidth)
-                X = Settings.WindowWidth - Settings.BoxSize;
-            else
-                X += Settings.BoxSize;
+            X = X + Settings.BoxSize * 2 > Settings.WindowWidth
+                ? Settings.WindowWidth - Settings.BoxSize
+                : X + Settings.BoxSize;
         }
 
         public Rectangle Rect() => new Rectangle(X, Y, Settings.BoxSize, Settings.BoxSize);
@@ -107,10 +105,15 @@ namespace Frogger.Models
             Icon = UpIcon;
         }
 
-        public void MoveWithLog(Log log)
+        public void MoveWithObject(MovingObject movingObject)
         {
             if (!Dead)
-                X += log.Speed;
+            {
+                if (movingObject.Direction == Direction.Right)
+                    X += movingObject.Speed;
+                else if (movingObject.Direction == Direction.Left)
+                    X -= movingObject.Speed;
+            }                
         }
     }
 }
